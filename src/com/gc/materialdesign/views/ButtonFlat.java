@@ -79,11 +79,12 @@ public class ButtonFlat extends Button {
 				x = -1;
 				y = -1;
 				radius = getHeight()/rippleSize;
-				if(onClickListener != null)
+				if(onClickListener != null&& clickAfterRipple)
 					onClickListener.onClick(this);
 			}
+			invalidate();
 		}		
-		invalidate();
+		
 	}
 	
 	/**

@@ -56,20 +56,18 @@ public class CheckBox extends CustomView {
 				setBackgroundColor(background);
 		}
 
-		boolean check = attrs.getAttributeBooleanValue(MATERIALDESIGNXML,
+		final boolean check = attrs.getAttributeBooleanValue(MATERIALDESIGNXML,
 				"check", false);
-		if (check) {
 			post(new Runnable() {
 
 				@Override
 				public void run() {
-					setChecked(true);
+					setChecked(check);
 					setPressed(false);
 					changeBackgroundColor(getResources().getColor(
 							android.R.color.transparent));
 				}
 			});
-		}
 
 		checkView = new Check(getContext());
 		RelativeLayout.LayoutParams params = new LayoutParams(Utils.dpToPx(20,
@@ -79,9 +77,17 @@ public class CheckBox extends CustomView {
 		addView(checkView);
 
 	}
+	
+	@Override
+	public void invalidate() {
+		checkView.invalidate();
+		super.invalidate();
+	}
+	
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		invalidate();
 		if (isEnabled()) {
 			isLastTouch = true;
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -118,8 +124,8 @@ public class CheckBox extends CustomView {
 					.parseColor("#446D6D6D"));
 			canvas.drawCircle(getWidth() / 2, getHeight() / 2, getWidth() / 2,
 					paint);
+			invalidate();
 		}
-		invalidate();
 	}
 
 	private void changeBackgroundColor(int color) {
@@ -153,6 +159,7 @@ public class CheckBox extends CustomView {
 	}
 
 	public void setChecked(boolean check) {
+		invalidate();
 		this.check = check;
 		setPressed(false);
 		changeBackgroundColor(getResources().getColor(
@@ -201,18 +208,23 @@ public class CheckBox extends CustomView {
 			super.onDraw(canvas);
 
 			if (check) {
-				if (step < 11)
+				if (step < 11){
 					step++;
+					invalidate();
+				}
 			} else {
-				if (step >= 0)
+				if (step >= 0){
 					step--;
-				if (step == -1)
+					invalidate();
+				}
+				if (step == -1){
+					invalidate();
 					changeBackground();
+				}
 			}
 			Rect src = new Rect(40 * step, 0, (40 * step) + 40, 40);
 			Rect dst = new Rect(0, 0, this.getWidth() - 2, this.getHeight());
 			canvas.drawBitmap(sprite, src, dst, null);
-			invalidate();
 
 		}
 

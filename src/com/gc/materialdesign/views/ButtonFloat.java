@@ -33,6 +33,11 @@ public class ButtonFloat extends Button{
 	ImageView icon; // Icon of float button
 	Drawable drawableIcon;
 	
+	public boolean isShow = false;
+	
+	float showPosition;
+	float hidePosition;
+	
 	
 	
 	public ButtonFloat(Context context, AttributeSet attrs) {
@@ -45,11 +50,6 @@ public class ButtonFloat extends Button{
 		icon.setScaleType(ScaleType.CENTER_CROP);
 		if(drawableIcon != null) {
 			icon.setImageDrawable(drawableIcon);
-//			try {
-//				icon.setBackground(drawableIcon);
-//			} catch (NoSuchMethodError e) {
-//				icon.setBackgroundDrawable(drawableIcon);
-//			}
 		}
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(Utils.dpToPx(sizeIcon, getResources()),Utils.dpToPx(sizeIcon, getResources()));
 		params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
@@ -97,24 +97,22 @@ public class ButtonFloat extends Button{
 				setRippleColor(makePressColor());
 		}
 		// Icon of button
-		int iconResource = attrs.getAttributeResourceValue(MATERIALDESIGNXML,"iconFloat",-1);
+		int iconResource = attrs.getAttributeResourceValue(MATERIALDESIGNXML,"iconDrawable",-1);
 		if(iconResource != -1)
 			drawableIcon = getResources().getDrawable(iconResource);
-		boolean animate = attrs.getAttributeBooleanValue(MATERIALDESIGNXML,"animate", false);
-		if(animate){
+		final boolean animate = attrs.getAttributeBooleanValue(MATERIALDESIGNXML,"animate", false);
 			post(new Runnable() {
 				
 				@Override
 				public void run() {
-					float originalY = ViewHelper.getY(ButtonFloat.this)-Utils.dpToPx(24, getResources());
-					ViewHelper.setY(ButtonFloat.this,ViewHelper.getY(ButtonFloat.this)+getHeight()*3);
-					ObjectAnimator animator = ObjectAnimator.ofFloat(ButtonFloat.this, "y", originalY);
-					animator.setInterpolator(new BounceInterpolator());
-					animator.setDuration(1500);
-					animator.start();
+					showPosition = ViewHelper.getY(ButtonFloat.this) - Utils.dpToPx(24, getResources());
+					hidePosition = ViewHelper.getY(ButtonFloat.this) + getHeight() * 3;
+					if(animate){
+						ViewHelper.setY(ButtonFloat.this, hidePosition);
+						show();
+					}
 				}
 			});
-		}
 					
 	}
 		
@@ -127,8 +125,8 @@ public class ButtonFloat extends Button{
 			Rect src = new Rect(0, 0, getWidth(), getHeight());
 			Rect dst = new Rect(Utils.dpToPx(1, getResources()), Utils.dpToPx(2, getResources()), getWidth()-Utils.dpToPx(1, getResources()), getHeight()-Utils.dpToPx(2, getResources()));
 			canvas.drawBitmap(cropCircle(makeCircle()), src, dst, null);
+			invalidate();
 		}
-		invalidate();
 	}
 	
 	
@@ -181,5 +179,27 @@ public class ButtonFloat extends Button{
 	
 	public void setRippleColor(int rippleColor) {
 		this.rippleColor = rippleColor;
+	}
+	
+	public void show(){
+		ObjectAnimator animator = ObjectAnimator.ofFloat(ButtonFloat.this, "y", showPosition);
+		animator.setInterpolator(new BounceInterpolator());
+		animator.setDuration(1500);
+		animator.start();
+		isShow = true;
+	}
+	
+	public void hide(){
+		
+		ObjectAnimator animator = ObjectAnimator.ofFloat(ButtonFloat.this, "y", hidePosition);
+		animator.setInterpolator(new BounceInterpolator());
+		animator.setDuration(1500);
+		animator.start();
+		
+		isShow = false;
+	}
+	
+	public boolean isShow(){
+		return isShow;
 	}
 }

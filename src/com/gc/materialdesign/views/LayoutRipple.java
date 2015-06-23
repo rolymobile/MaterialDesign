@@ -83,6 +83,7 @@ public class LayoutRipple extends CustomView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		invalidate();
 		if (isEnabled()) {
 			isLastTouch = true;
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -108,6 +109,10 @@ public class LayoutRipple extends CustomView {
 					x = -1;
 					y = -1;
 				}
+			}if (event.getAction() == MotionEvent.ACTION_CANCEL) {
+					isLastTouch = false;
+					x = -1;
+					y = -1;
 			}
 		}
 		return true;
@@ -159,8 +164,8 @@ public class LayoutRipple extends CustomView {
 			Rect src = new Rect(0, 0, getWidth(), getHeight());
 			Rect dst = new Rect(0, 0, getWidth(), getHeight());
 			canvas.drawBitmap(makeCircle(), src, dst, null);
+			invalidate();
 		}
-		invalidate();
 	}
 
 	/**

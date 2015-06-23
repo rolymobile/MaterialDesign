@@ -91,6 +91,12 @@ public class Slider extends CustomView {
 		}
 
 	}
+	
+	@Override
+	public void invalidate() {
+		ball.invalidate();
+		super.invalidate();
+	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -194,14 +200,12 @@ public class Slider extends CustomView {
 
 				}
 
-			} else if (event.getAction() == MotionEvent.ACTION_UP) {
+			} else if (event.getAction() == MotionEvent.ACTION_UP ||
+					event.getAction() == MotionEvent.ACTION_CANCEL) {
 				if (numberIndicator != null)
 					numberIndicator.dismiss();
 				isLastTouch = false;
 				press = false;
-				if ((event.getX() <= getWidth() && event.getX() >= 0)) {
-
-				}
 			}
 		}
 		return true;

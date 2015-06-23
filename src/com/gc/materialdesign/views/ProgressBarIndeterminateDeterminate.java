@@ -8,7 +8,7 @@ import com.nineoldandroids.view.ViewHelper;
 import android.content.Context;
 import android.util.AttributeSet;
 
-public class ProgressBarIndeterminateDeterminate extends ProgressBarDetermininate {
+public class ProgressBarIndeterminateDeterminate extends ProgressBarDeterminate {
 	
 	boolean firstProgress = true;
 	boolean runAnimation = true;

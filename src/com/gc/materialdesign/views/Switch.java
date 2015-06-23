@@ -2,7 +2,6 @@ package com.gc.materialdesign.views;
 
 import com.gc.materialdesign.R;
 import com.gc.materialdesign.utils.Utils;
-import com.gc.materialdesign.views.CheckBox.OnCheckListener;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.ViewHelper;
 
@@ -102,7 +101,8 @@ public class Switch extends CustomView {
 					isLastTouch = false;
 					press = false;
 				}
-			} else if (event.getAction() == MotionEvent.ACTION_UP) {
+			} else if (event.getAction() == MotionEvent.ACTION_UP ||
+					event.getAction() == MotionEvent.ACTION_CANCEL) {
 				press = false;
 				isLastTouch = false;
 				if (eventCheck != check) {
@@ -194,6 +194,7 @@ public class Switch extends CustomView {
 	}
 
 	public void setChecked(boolean check) {
+		invalidate();
 		this.check = check;
 		ball.animateCheck();
 	}

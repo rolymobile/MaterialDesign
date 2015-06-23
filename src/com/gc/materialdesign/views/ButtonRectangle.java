@@ -4,11 +4,13 @@ import com.gc.materialdesign.R;
 import com.gc.materialdesign.utils.Utils;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -70,8 +72,6 @@ public class ButtonRectangle extends Button {
 //			value = attrs.getAttributeValue(ANDROIDXML,"paddingBottom");
 //			paddingBottom = (value == null) ? paddingBottom : (int) Float.parseFloat(value.replace("dip", ""));
 //		}
-		
-		
 		// Set text button
 		String text = null;
 		int textResource = attrs.getAttributeResourceValue(ANDROIDXML,"text",-1);
@@ -83,8 +83,8 @@ public class ButtonRectangle extends Button {
 		if(text != null){
 			textButton = new TextView(getContext());
 			textButton.setText(text);
-			textButton.setTextColor(Color.WHITE);
 			textButton.setTypeface(null, Typeface.BOLD);
+			textButton.setTextColor(Color.WHITE);
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
 			params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 			params.setMargins(Utils.dpToPx(5, getResources()), Utils.dpToPx(5, getResources()), Utils.dpToPx(5, getResources()), Utils.dpToPx(5, getResources()));
@@ -126,8 +126,8 @@ public class ButtonRectangle extends Button {
 			Rect src = new Rect(0, 0, getWidth()-Utils.dpToPx(6, getResources()), getHeight()-Utils.dpToPx(7, getResources()));
 			Rect dst = new Rect(Utils.dpToPx(6, getResources()), Utils.dpToPx(6, getResources()), getWidth()-Utils.dpToPx(6, getResources()), getHeight()-Utils.dpToPx(7, getResources()));
 			canvas.drawBitmap(makeCircle(), src, dst, null);
+			invalidate();
 		}
-		invalidate();
 	}
 	
 	public void setText(String text){
@@ -137,6 +137,11 @@ public class ButtonRectangle extends Button {
 	public void setTextColor(int color){
 		textButton.setTextColor(color);
 	}
+	
+	public void setTextSize(float size){
+		textButton.setTextSize(size);
+	}
+	
 	@Override
 	public TextView getTextView() {
 		return textButton;

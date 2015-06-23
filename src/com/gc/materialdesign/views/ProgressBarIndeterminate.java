@@ -11,7 +11,7 @@ import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-public class ProgressBarIndeterminate extends ProgressBarDetermininate {
+public class ProgressBarIndeterminate extends ProgressBarDeterminate {
 
 	public ProgressBarIndeterminate(Context context, AttributeSet attrs) {
 		super(context, attrs);
